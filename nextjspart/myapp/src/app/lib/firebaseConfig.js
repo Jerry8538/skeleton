@@ -4,15 +4,15 @@ import { getFirestore,collection, addDoc,doc,getDoc ,getDocs,setDoc,query,orderB
 
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyC7RtocKn9RRMREVis0KoJeIISZMysXFaA",
+  authDomain: "pls-work-c0d1a.firebaseapp.com",
+  projectId: "pls-work-c0d1a",
+  storageBucket: "pls-work-c0d1a.appspot.com",
+  messagingSenderId: "576747885610",
+  appId: "1:576747885610:web:1aa9af29c5ad8633299f53",
 };
 
-// Initialize Firebase if it hasn’t been initialized already
+// Initialize Firebase if it hasn't been initialized already
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 // Export Firebase services as needed
