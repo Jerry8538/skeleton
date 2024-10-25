@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Send, Bot, User } from 'lucide-react'
+import { addData } from './storeFirebase'
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState([])
@@ -10,6 +11,8 @@ export default function ChatInterface() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!inputMessage.trim()) return
+
+    addData(inputMessage)
 
     setMessages(prevMessages => [...prevMessages, { role: 'user', content: inputMessage }])
     setInputMessage('')
