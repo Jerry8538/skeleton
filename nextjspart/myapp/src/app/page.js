@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Send, Bot, User } from 'lucide-react'
-import { addData, getData, resetData } from './accessFirebase'
+import { addData, getData, resetData, getOutput } from './accessFirebase'
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState([])
@@ -16,6 +16,8 @@ export default function ChatInterface() {
     addData(inputMessage) // list of prev messages
     const messages = getData() // this returns a list, use this wherever
     console.log(messages)
+
+    const outputMessage = await getOutput()
 
     setMessages(prevMessages => [...prevMessages, { role: 'user', content: inputMessage }])
     setInputMessage('')

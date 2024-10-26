@@ -1,6 +1,6 @@
 import {db} from "./lib/firebaseConfig.js"
 //"https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js"
-import {collection, addDoc,doc,getDoc ,getDocs,setDoc,query,orderBy, deleteDoc} from "firebase/firestore";
+import {collection, addDoc,doc,getDoc ,getDocs,setDoc,orderBy, deleteDoc, query, where } from "firebase/firestore";
 
 export async function resetData(){
     const coll = collection(db, "queries")
@@ -58,4 +58,19 @@ export async function getData(){
     return ans
 }
 
+export async function getOutput(){
+    const coll = collection(db, "queries")
+    const count = doc(coll, "count")
+    const getCount = await getDoc(count)
+    console.log(getCount.num)
+
+    let found = false
+    while (!found) {
+        const q = query(coll, where("id", "==", getCount.num))
+        const querySnapshot = await getDocs(q)
+        console.log(querySnapshot.output)
+    }
+}
+
+getOutput()
 //resetData()
