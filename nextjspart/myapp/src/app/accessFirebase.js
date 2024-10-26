@@ -111,12 +111,10 @@ export async function getOutput() {
     //console.log(getCount.data().num)
 
     while (true) {
-        const messageCountRef = doc(messageColxn, "count")
+        const messageCountRef = doc(messageColxn, "messageCount")
         const messageCount = await getDoc(messageCountRef)
-
         const q = query(messageColxn, where("id", "==", messageCount.data().num))
         const latestMessage = (await getDocs(q)).docs[0].data()
-        console.log(latestMessage)
 
         if (latestMessage.output === '') {
             continue
@@ -138,9 +136,17 @@ export async function endConv(){
     const latestConv = (await getDocs(latestConvQuery)).docs[0]
 }
 
-//getOutput()
+//console.log(getOutput())
 //resetData()
 //await addConversation()
-await addMessage("I'm unhappy")
-await addMessage("I'm having troubling thoughts recently")
-await addMessage("but I don't want to kill myself")
+//await addMessage("I'm unhappy")
+//await addMessage("I'm having troubling thoughts recently")
+// await addMessage("but I don't want to kill myself and I'm not eating well")
+// await addMessage("I'm sleepy and I might get fired from my job")
+// await addMessage("I'm having troubling thoughts recently")
+// await addMessage("I've been feeling really good recently")
+// await addMessage("I feel stressed all the time and never hungry")
+// await addMessage("I'm having troubling thoughts recently")
+// await addMessage("but I don't want to kill myself")
+//await addMessage("I'm really tired and exhausted right now")
+

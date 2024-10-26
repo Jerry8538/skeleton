@@ -10,6 +10,14 @@ db = firestore.client() # Create an Event for notifying main thread.
 
 conversations_ref = db.collection("conversations")
 
+def create_list(string):
+    keywords_str = keywords_str.replace("],[", ",")  
+    keywords_str = keywords_str[:-2]  
+    keywords = keywords_str.split(",")  
+    trimmed_keywords = list(map(str.strip, keywords)) 
+    trimmed_strings = list(map(lambda s: s[1:-1], trimmed_keywords))
+    return trimmed_strings
+
 
 def create_conversation(conversation_id):
     # Reference to the `messages` subcollection of the given conversation
@@ -70,6 +78,28 @@ def add_summary():
 
     query = conversations_ref.where("id", "==", conversation_id).limit(1)
     results = query.get()
+
+    # now to create the summary of session
+    mental_health_dict = {
+        "Anxiety": None,
+        "Career worries": None,
+        "Depression": None,
+        "Eating disorder": None,
+        "Health anxiety": None,
+        "Insomnia": None,
+        "Positive outlook": None,
+        "Stress": None,
+        "Extreme mental health emergency": None
+    }
+
+    keywords_list = create_list(objectives[1])
+    mappedKeywordsList = create_list(objectives[2])
+    intensityList = create_list(objectives[3])
+    polarityList = objectives[4][:-1].split(',')
+    print(keywords_list)
+    print(mappedKeywordsList)
+    print(intensityList)
+    print(polarityList)
 
     if results:
         # Get the document reference
