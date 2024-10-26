@@ -7,6 +7,8 @@ import Navbar from '../compos/navbar.js'
 import { useEffect } from 'react'
 import { addConversation, addMessage, getOutput } from '../accessFirebase.js'
 
+
+let flag=1 // so that the conversation doesn't get added multiple times
 export default function ChatInterface() {
   const question_list = [
     "Can you describe situations that make you feel anxious or worried? What thoughts typically accompany those feelings?",
@@ -23,12 +25,11 @@ export default function ChatInterface() {
   const [inputMessage, setInputMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const [count, setCount] = useState(1)
-  const [flag, setFlag] = useState(1)
 
   
   if (flag === 1){
     addConversation()
-    setFlag(0)
+    flag=0
   }
 
   const handleSubmit = async (e) => {

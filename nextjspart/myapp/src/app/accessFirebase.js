@@ -1,6 +1,6 @@
 import { db } from "./lib/firebaseConfig.js"
 //"https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js"
-import { collection, addDoc, doc, getDoc, getDocs, setDoc, orderBy, deleteDoc, query, where } from "firebase/firestore";
+import { collection, addDoc, doc, getDoc, getDocs, setDoc, updateDoc, orderBy, deleteDoc, query, where } from "firebase/firestore";
 
 
 export async function resetData() {
@@ -85,15 +85,6 @@ export async function addMessage(message) {
     }
 }
 
-export async function getData() {
-    // THIS IS FUCKING POINTLESS BTW
-    const coll = collection(db, "queries")
-    const getData = await getDocs(coll)
-    let ans = [];
-    getData.forEach((doc) => { ans.push(doc.data()) })
-    console.log(ans)
-    return ans
-}
 export async function getOutput() {
     const colxn = collection(db, "conversations")
 
@@ -134,6 +125,8 @@ export async function endConv(){
     // get the latest conversationDoc
     const latestConvQuery = query(colxn, where("id", "==", convCount))
     const latestConv = (await getDocs(latestConvQuery)).docs[0]
+
+    await updateDoc(latestConv.ref, {ended: true})
 }
 
 //console.log(getOutput())
@@ -149,4 +142,4 @@ export async function endConv(){
 // await addMessage("I'm having troubling thoughts recently")
 // await addMessage("but I don't want to kill myself")
 //await addMessage("I'm really tired and exhausted right now")
-
+//endConv()
