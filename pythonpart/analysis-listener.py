@@ -1,7 +1,9 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
 import time
-from AI import final_return
+import json
+from summary import get_conversation_summary
+from keywords import final_return
 
 # Initialize Firebase
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -105,6 +107,10 @@ def add_summary():
     # print(intensityList)
     polarityList = objectives[0][:-1].split(',')
     # print(polarityList)
+    polarityno = list(map(int, polarityList))
+
+    # Calculate the average
+    polarity_average = sum(polarityno) / len(polarityno) if polarityno else 0
 
     # Loop over the lists simultaneously
     for keyword, category, intensity, polarity in zip(keywords_list, mappedKeywordsList, intensityList, polarityList):
@@ -116,11 +122,14 @@ def add_summary():
             # Append the entry to the appropriate list in mental_health_dict
             mental_health_dict[category].append(entry)
             
-            print(f"Added entry to '{category}': {entry}")
+            #print(f"Added entry to '{category}': {entry}")
+    
 
     # Final state of mental_health_dict
     print("\nFinal mental_health_dict:")
     print(mental_health_dict)
+
+    summary = json.dumps(mental_health_dict)
 
     if results:
         # Get the document reference
@@ -132,7 +141,9 @@ def add_summary():
                 "polarity":objectives[0],
                 "keywords":objectives[1],
                 "mappedKeywords":objectives[2],
-                "intensity":objectives[3]
+                "intensity":objectives[3],
+                "average-polarity":polarity_average,
+                "summary": summary
             })
             print(f"Document with ID {id} updated successfully.")
         except Exception as e:

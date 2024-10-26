@@ -1,4 +1,3 @@
-AICHATBOT
 
 import os
 from langchain.llms import OpenAI

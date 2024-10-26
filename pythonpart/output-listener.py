@@ -1,7 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
 import time
-from AI import get_openai_response
+from keywords import get_openai_response
 
 # Initialize Firebase
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -36,14 +36,6 @@ def add_output():
     # Step 2: Query the messages subcollection for the document where `id` equals `num`
     message_query = messages_ref.where("id", "==", message_id).limit(1)
     
-    # Convert the query result to a list and get the first document if it exists
-    # message_docs = list(message_query.stream())
-    #     if message_docs:
-    #         return message_docs[0].to_dict()
-    #     else:
-    #         print("No message found with id equal to num.")
-    # except Exception as e:
-    #     print("Error retrieving message by num:", e)
     
     results = message_query.get()
     input_msg = results[0].to_dict()["input"]
