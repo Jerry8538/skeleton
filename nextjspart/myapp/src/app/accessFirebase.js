@@ -60,15 +60,25 @@ export async function getData(){
 
 export async function getOutput(){
     const coll = collection(db, "queries")
-    const count = doc(coll, "count")
-    const getCount = await getDoc(count)
-    console.log(getCount.num)
+    
+    //console.log(getCount.data().num)
 
-    let found = false
-    while (!found) {
-        const q = query(coll, where("id", "==", getCount.num))
+    while (true) {
+        const count = doc(coll, "count")
+        const getCount = await getDoc(count)
+
+        const q = query(coll, where("id", "==", getCount.data().num))
         const querySnapshot = await getDocs(q)
-        console.log(querySnapshot.output)
+        let ans = [];
+        querySnapshot.forEach((doc) => {ans.push(doc.data())})
+        //console.log(ans[0])
+
+        if (ans[0].output === ''){
+            continue
+        } else{
+            return ans[0].output
+            //console.log(ans[0].output)
+        }
     }
 }
 

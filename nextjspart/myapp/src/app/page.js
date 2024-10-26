@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Send, Bot, User } from 'lucide-react'
 import { addData, getData, resetData, getOutput } from './accessFirebase'
 
+//resetData() // this removes everything and sets count to 0
+
 export default function ChatInterface() {
   const [messages, setMessages] = useState([])
   const [inputMessage, setInputMessage] = useState('')
@@ -12,10 +14,8 @@ export default function ChatInterface() {
     e.preventDefault()
     if (!inputMessage.trim()) return
 
-    //resetData() // this removes everything and sets count to 0
-    addData(inputMessage) // list of prev messages
-    const messages = getData() // this returns a list, use this wherever
-    console.log(messages)
+    await addData(inputMessage) // list of prev messages
+    //const messages = getData() // this returns a list, use this to load previous messages
 
     const outputMessage = await getOutput()
 
@@ -23,7 +23,7 @@ export default function ChatInterface() {
     setInputMessage('')
 
     setTimeout(() => {
-      setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: 'This is a simulated AI response.' }])
+      setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: outputMessage }])
     }, 1000)
   }
 
