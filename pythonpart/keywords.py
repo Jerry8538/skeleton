@@ -14,7 +14,6 @@ mental_health_categories = [
     "Stress",
     "Extreme mental health emergency"
 ]
-
 def get_openai_response(prompt):
     response = client.chat.completions.create(
       model = "gpt-4o-mini",

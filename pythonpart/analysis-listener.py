@@ -11,12 +11,17 @@ db = firestore.client() # Create an Event for notifying main thread.
 conversations_ref = db.collection("conversations")
 
 def create_list(string):
-    keywords_str = keywords_str.replace("],[", ",")  
-    keywords_str = keywords_str[:-2]  
-    keywords = keywords_str.split(",")  
+    keywords_str = string.replace("],[", ",")  
+    keywords = keywords_str[1:-2].split(",")
     trimmed_keywords = list(map(str.strip, keywords)) 
     trimmed_strings = list(map(lambda s: s[1:-1], trimmed_keywords))
     return trimmed_strings
+
+def create_intensity_list(string):
+    keywords_str = string.replace("],[", ",")  
+    keywords = keywords_str[1:-2].split(",")
+    trimmed_keywords = list(map(str.strip, keywords)) 
+    return trimmed_keywords
 
 
 def create_conversation(conversation_id):
@@ -53,7 +58,7 @@ def create_conversation(conversation_id):
 def add_summary():
 
     conversation_id = conversations_ref.document("conversationCount").get().to_dict()["num"]
-
+    
     query = conversations_ref.where("id", "==", conversation_id).limit(1)
     results = query.get()
 
@@ -81,25 +86,41 @@ def add_summary():
 
     # now to create the summary of session
     mental_health_dict = {
-        "Anxiety": None,
-        "Career worries": None,
-        "Depression": None,
-        "Eating disorder": None,
-        "Health anxiety": None,
-        "Insomnia": None,
-        "Positive outlook": None,
-        "Stress": None,
-        "Extreme mental health emergency": None
+        "Anxiety": [],
+        "Career worries": [],
+        "Depression": [],
+        "Eating disorder": [],
+        "Health anxiety": [],
+        "Insomnia": [],
+        "Positive outlook": [],
+        "Stress": [],
+        "Extreme mental health emergency": []
     }
 
     keywords_list = create_list(objectives[1])
+    # print(keywords_list)
     mappedKeywordsList = create_list(objectives[2])
-    intensityList = create_list(objectives[3])
-    polarityList = objectives[4][:-1].split(',')
-    print(keywords_list)
-    print(mappedKeywordsList)
-    print(intensityList)
-    print(polarityList)
+    # print(mappedKeywordsList)
+    intensityList = create_intensity_list(objectives[3])
+    # print(intensityList)
+    polarityList = objectives[0][:-1].split(',')
+    # print(polarityList)
+
+    # Loop over the lists simultaneously
+    for keyword, category, intensity, polarity in zip(keywords_list, mappedKeywordsList, intensityList, polarityList):
+        # Check if the category exists in mental_health_dict
+        if category in mental_health_dict:
+            # Create the dictionary entry
+            entry = {"keyword": keyword, "intensity": int(intensity), "polarity": int(polarity)}
+            
+            # Append the entry to the appropriate list in mental_health_dict
+            mental_health_dict[category].append(entry)
+            
+            print(f"Added entry to '{category}': {entry}")
+
+    # Final state of mental_health_dict
+    print("\nFinal mental_health_dict:")
+    print(mental_health_dict)
 
     if results:
         # Get the document reference
@@ -133,4 +154,4 @@ while True:
     else:
         print(f"no change- convo-id = {conversation_id} and old_id = {old_id}")
         continue
-    #time.sleep(1)
+     #time.sleep(1)
