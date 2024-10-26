@@ -50,4 +50,4 @@ while True:
         print(f"change detected. now we have {id} students")
         add_output()
         id1=id
-    time.sleep(5)
+    #time.sleep(1)
