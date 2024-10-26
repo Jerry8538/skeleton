@@ -126,9 +126,21 @@ export async function getOutput() {
     }
 }
 
+export async function endConv(){
+    const colxn = collection(db, "conversations")
+
+    const convCountRef = doc(colxn, "conversationCount");
+    // Fetch the number of conversations to get the latest id
+    const convCount = (await getDoc(convCountRef)).data().num;
+
+    // get the latest conversationDoc
+    const latestConvQuery = query(colxn, where("id", "==", convCount))
+    const latestConv = (await getDocs(latestConvQuery)).docs[0]
+}
+
 //getOutput()
 //resetData()
 //await addConversation()
-//await addMessage("I'm unhappy")
-//await addMessage("I'm having troubling thoughts recently")
+await addMessage("I'm unhappy")
+await addMessage("I'm having troubling thoughts recently")
 await addMessage("but I don't want to kill myself")

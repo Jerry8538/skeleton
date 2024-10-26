@@ -89,24 +89,6 @@ def add_summary():
     else:
         print(f"No document found with ID {id}")
 
-    # if results:
-    #     # Get the document reference
-    #     doc_ref = results[0].reference
-    #     try:
-    #         # Update fields with the data provided in updated_data
-    #         doc_ref.update({
-    #             "id":id,
-    #             "input":input_msg,
-    #             "output":output_msg
-    #         })
-    #         print(f"Document with ID {id} updated successfully.")
-    #     except Exception as e:
-    #         print(f"An error occurred while updating: {e}")
-    # else:
-    #     print(f"No document found with ID {id}")
-
-#print(conversations_ref.document("conversationCount").get().to_dict())
-
 old_id = -1
 
 while True:
@@ -122,4 +104,3 @@ while True:
         print(f"no change- convo-id = {conversation_id} and old_id = {old_id}")
         continue
     #time.sleep(1)
-

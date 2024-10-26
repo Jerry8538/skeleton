@@ -82,10 +82,14 @@ id1 = messages_ref.document("messageCount").get().to_dict()["num"]
 # Watch the document
 while True:
     id = messages_ref.document("messageCount").get().to_dict()["num"]
-    if (id == id1):
-        print("no changes")
-        print(f"id is {id1} and id1 is {id1}")
+    if(id >9):
+        
+        if (id == id1):
+            print("no changes")
+            print(f"id is {id1} and id1 is {id1}")
+        else:
+            print(f"change detected. now we have {id} messages")
+            add_output()
+            id1=id
     else:
-        print(f"change detected. now we have {id} messages")
-        add_output()
-        id1=id
+        print(f"id is {id} and id1 is {id1}")
