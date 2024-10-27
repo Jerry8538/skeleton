@@ -184,10 +184,10 @@ export async function getAvgPolarities(){
     const colxn = collection(db, "conversations")
 
     // get all conversation docs
-    const allConvs = getDocs(colxn)
+    const allConvs = await getDocs(query(colxn, orderBy("id")))
 
     let avgPolarities = []
-    (await allConvs).forEach((doc) => {polarities.push(doc.data().avgPolarity)})
+    allConvs.forEach((doc) => {avgPolarities.push(doc.data().avgPolarity)})
 
     return avgPolarities
 }
@@ -196,10 +196,10 @@ export async function getSummaries(){
     const colxn = collection(db, "conversations")
 
     // get all conversation docs
-    const allConvs = getDocs(colxn)
+    const allConvs = await getDocs(colxn)
 
     let summaries = []
-    (await allConvs).forEach((doc) => {summaries.push(doc.data().summary)})
+    allConvs.forEach((doc) => {summaries.push(doc.data().summary)})
 
     return summaries
 }

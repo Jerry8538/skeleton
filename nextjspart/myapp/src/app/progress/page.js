@@ -1,8 +1,9 @@
 'use client' 
+
+import PolarityGraph from '../compos/polaritygraph.js';
 import ComponentAnalysis from './graph.js'
 import Navbar from '../compos/navbar.js'
 import { useEffect, useState } from 'react';
-import PolarityGraph from './polaritygraph.js';
 import { getAvgPolarities, getFinalSummary } from '../accessFirebase.js';
 
 const polarities = await getAvgPolarities()
