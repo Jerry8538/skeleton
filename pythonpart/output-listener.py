@@ -67,6 +67,7 @@ query_ref = conversations_ref.where("id", "==", conversation_id)
 query_result = query_ref.limit(1).stream()  # Limit to 1 document
 
 # Retrieve the first matching conversation document
+messages_ref = ""
 for conversation in query_result:
     # If the conversation is found, get the messages subcollection
     messages_ref = conversation.reference.collection("messages")

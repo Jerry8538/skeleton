@@ -3,7 +3,7 @@
 import React from 'react';
 import {useParams} from 'next/navigation'
 import PolarityGraph from '@/app/compos/polaritygraph';
-import {getPolarityById,getSummaryById} from '@/app/accessFirebase'
+import {getJSONById, getPolarityById,getSummaryById} from '@/app/accessFirebase'
 import { useEffect } from 'react';
 
 export default function Dashboard() {
@@ -11,9 +11,10 @@ export default function Dashboard() {
     console.log(id)
     var polarity = []
     var Summary = ""
+    var jsondata = ""
   useEffect(() => {
     //get firebase data
-
+    jsondata = getJSONById(id)
     polarity = getPolarityById(id)
     Summary = getSummaryById(id)
   })
@@ -37,6 +38,11 @@ export default function Dashboard() {
       <div className="bg-gray-400 mt-4 p-4 rounded-lg shadow-lg">
         <h3 className="text-lg font-bold">Summary of Session {id}</h3>
         <p>{Summary}</p>
+      </div>
+
+      <div className="bg-gray-400 mt-4 p-4 rounded-lg shadow-lg">
+        <h3 className="text-lg font-bold">Raw JSON Data of Session {id}: </h3>
+        <p>{jsondata}</p>
       </div>
     </div>
   );
