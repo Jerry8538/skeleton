@@ -6,17 +6,23 @@ import PolarityGraph from '@/app/compos/polaritygraph';
 import {getJSONById, getPolarityById,getSummaryById} from '@/app/accessFirebase'
 import { useEffect } from 'react';
 
+const Summary = await getSummaryById(3)
+const polarity = await getPolarityById(3)
+console.log(polarity)
+const jsondata = await getJSONById(3)
+
 export default function Dashboard() {
     const { id } = useParams()
     console.log(id)
-    var polarity = []
-    var Summary = ""
-    var jsondata = ""
+    //var polarity = []
+    //var Summary = ""
+    //var jsondata = ""
+
   useEffect(() => {
     //get firebase data
-    jsondata = getJSONById(id)
-    polarity = getPolarityById(id)
-    Summary = getSummaryById(id)
+    //jsondata = getJSONById(id)
+    //polarity = getPolarityById(id)
+    //Summary = getSummaryById(id)
   })
   return (
     <div className="min-h-screen bg-gray-100 p-6">

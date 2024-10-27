@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import { numConv } from '../accessFirebase'
 export default function VerticalColorfulLinks() {
-  const links = []
+  const links = [1,2,3,4,5]
   const initlinks = async () => {
     //const num = await numConv()
     const num = 3
