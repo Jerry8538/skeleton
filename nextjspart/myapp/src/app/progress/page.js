@@ -2,7 +2,7 @@
 import ComponentAnalysis from './graph.js'
 import Navbar from '../compos/navbar.js'
 import { useEffect, useState } from 'react';
-import PolarityGraph from './polaritygraph.js';
+import PolarityGraph from '../compos/polaritygraph.js';
 export default function ProgressPage() {
 
     const [polarity, setPolarity] = useState([]);
