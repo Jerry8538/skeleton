@@ -197,7 +197,8 @@ export async function getFinalSummary(){
     const totalRef = doc(colxn, "total")
     const total = (await getDoc(totalRef)).data()
 
-
+    console.log(total.summary)
+    return total.summary
 }
 
 //console.log(getOutput())
@@ -214,3 +215,4 @@ export async function getFinalSummary(){
 // await addMessage("but I don't want to kill myself")
 //await addMessage("I'm really tired and exhausted right now")
 //endConv()
+//getFinalSummary()
