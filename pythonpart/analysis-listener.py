@@ -182,8 +182,7 @@ def add_total_summary():
         
         for conversation in conversations:
             conversation_data = conversation.to_dict()
-            full_summary += f"Summary of Conversation 1 on Date : {conversation_data["time"]} \n
-                            {conversation_data["summary"]}"
+            full_summary += f"Summary of Conversation 1 on Date : {conversation_data["time"]} \n{conversation_data["summary"]}"
     
     doc_ref = conversations_ref.document("total_summary")
     doc_ref.update({
