@@ -1,22 +1,24 @@
-'use client'
+'use client';
 
-import React from 'react'
-import Link from 'next/link'
-import { useEffect } from 'react'
-import { numConv } from '../accessFirebase'
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { numConv } from '../accessFirebase';
+
 export default function VerticalColorfulLinks() {
-  const links = [1,2,3,4,5]
+  const [links, setLinks] = useState([]); // Use state for links to trigger re-render
+
   const initlinks = async () => {
-    //const num = await numConv()
-    const num = 3
-    for (let i = 1; i <= num; i++) {
-      links.push(i)
-    }
-  }
+    const num = await numConv();
+    console.log(num);
+
+    // Generate links array based on the number
+    const generatedLinks = Array.from({ length: num }, (_, i) => i + 1);
+    setLinks(generatedLinks); // Update the state
+  };
 
   useEffect(() => {
-    initlinks()
-  }, [])
+    initlinks();
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
@@ -33,5 +35,5 @@ export default function VerticalColorfulLinks() {
         </nav>
       </div>
     </div>
-  )
+  );
 }
