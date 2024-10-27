@@ -2,13 +2,20 @@
 import ComponentAnalysis from './graph.js'
 import Navbar from '../compos/navbar.js'
 import { useEffect, useState } from 'react';
-import PolarityGraph from '../compos/polaritygraph.js';
+import PolarityGraph from './polaritygraph.js';
+import { getAvgPolarities, getFinalSummary } from '../accessFirebase.js';
+
+const polarities = await getAvgPolarities()
+console.log(polarities)
+
+const summary = await getFinalSummary()
+
 export default function ProgressPage() {
 
     const [polarity, setPolarity] = useState([]);
 
     useEffect(() => {
-        setPolarity([15, 20, -30 , -40, 50, 60]);
+        setPolarity(polarities);
     }, [])
     return (
         <div style={{ backgroundColor: 'black', color: 'white', height: '1000vh' }}>
@@ -22,6 +29,7 @@ export default function ProgressPage() {
                 <div style={{ flex: 1, padding: '20px', color: 'white' }}>
                     <h2>Summary</h2>
                     </div>
+                    {summary}
                     </div>
             </div>
         </div>
