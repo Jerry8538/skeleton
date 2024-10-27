@@ -109,7 +109,9 @@ def add_summary():
     intensityList = create_intensity_list(objectives[3])
     # print(intensityList)
     polarityList = objectives[0][:-1].split(',')
-    #print(polarityList)
+    for i in range(len(polarityList)):
+        if polarityList[i] == None:
+            polarityList[i] = 0
     # print(polarityList)
     polarityno = list(map(int, polarityList))
     #print(polarityno)
@@ -120,7 +122,7 @@ def add_summary():
     cubed_numbers = [x ** 3 for x in polarityno]
 
     # Step 2: Calculate the average of the cubed numbers
-    average_cubed = sum(cubed_numbers) / len(cubed_numbers)
+    average_cubed = abs(sum(cubed_numbers)) / len(cubed_numbers)
 
     # Step 3: Take the cube root of the average
     polarity_average = average_cubed ** (1/3)
@@ -176,15 +178,18 @@ def add_total_summary():
     
     full_summary = ""
     for i in range(conversation_id):
-        j = i+1
-
-        conversations = conversations_ref.stream()
-        
-        for conversation in conversations:
-            conversation_data = conversation.to_dict()
-            full_summary += f"Summary of Conversation 1 on Date : {conversation_data["time"]} \n{conversation_data["summary"]}"
+        query = conversations_ref.where("id", "==", i+1).limit(1)
+        # print(query)
+        # print(query.get())
+        # print(query.get()[0].to_dict())
+        query = query.get()[0].to_dict()
+        print(query)
+        print(full_summary )
+        time_value = query.get("time", " ")
+        summary_value = query.get("summary", " ")
+        full_summary += f"Summary of Conversation {i+1} on Date : {time_value} \n {summary_value}"
     
-    doc_ref = conversations_ref.document("total_summary")
+    doc_ref = conversations_ref.document("total")
     doc_ref.update({
         "summary":get_total_summary(full_summary)
     })
