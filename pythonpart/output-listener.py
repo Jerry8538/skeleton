@@ -74,14 +74,29 @@ id1 = messages_ref.document("messageCount").get().to_dict()["num"]
 
 # Watch the document
 while True:
-    id = messages_ref.document("messageCount").get().to_dict()["num"]
-    if(id >9):
-        if (id == id1):
-            print("no changes")
-            print(f"id is {id} and id1 is {id1}")
+    conv_id_now = db.collection("conversations").document("conversationCount").get().to_dict()["num"]
+    
+    if conversation_id == conv_id_now :
+        id = messages_ref.document("messageCount").get().to_dict()["num"]
+        if(id >9):
+            if (id == id1):
+                print("no changes")
+                print(f"id is {id} and id1 is {id1}")
+            else:
+                print(f"change detected. now we have {id} messages")
+                add_output()
+                id1=id
         else:
-            print(f"change detected. now we have {id} messages")
-            add_output()
-            id1=id
+            print(f"id is {id} and id1 is {id1}")
+    
     else:
-        print(f"id is {id} and id1 is {id1}")
+        conversation_id = db.collection("conversations").document("conversationCount").get().to_dict()["num"]
+        query_ref = conversations_ref.where("id", "==", conversation_id)
+        query_result = query_ref.limit(1).stream()  # Limit to 1 document
+
+        # Retrieve the first matching conversation document
+        for conversation in query_result:
+            # If the conversation is found, get the messages subcollection
+            messages_ref = conversation.reference.collection("messages")
+
+        id1 = messages_ref.document("messageCount").get().to_dict()["num"]
