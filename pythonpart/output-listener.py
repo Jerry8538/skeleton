@@ -2,6 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import time
 from keywords import get_openai_response
+from chatbot import chat_with_bot
 from summary import get_conversation_summary
 
 # Initialize Firebase
@@ -40,7 +41,7 @@ def add_output():
     
     results = message_query.get()
     input_msg = results[0].to_dict()["input"]
-    output_msg = get_conversation_summary(input_msg)
+    output_msg = chat_with_bot(input_msg)
 
     if results:
         # Get the document reference

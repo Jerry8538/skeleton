@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import time
 import json
-from summary import get_conversation_summary
+from summary import get_conversation_summary,get_total_summary
 from keywords import final_return
 from datetime import datetime
 
@@ -53,7 +53,6 @@ def create_conversation(conversation_id):
     for message in messages:
         message_data = message.to_dict()
         input_text = message_data.get("input", "")
-        output_text = message_data.get("output", "")
 
         # Append formatted input and output to the conversation string
         if(input_text != ''):
@@ -110,14 +109,23 @@ def add_summary():
     intensityList = create_intensity_list(objectives[3])
     # print(intensityList)
     polarityList = objectives[0][:-1].split(',')
-    print(polarityList)
+    #print(polarityList)
     # print(polarityList)
     polarityno = list(map(int, polarityList))
-    print(polarityno)
+    #print(polarityno)
 
     # Calculate the average
-    polarity_average = sum(polarityno) / len(polarityno) if polarityno else 0
-    print(polarity_average)
+
+    # Step 1: Cube each number in the list
+    cubed_numbers = [x ** 3 for x in polarityno]
+
+    # Step 2: Calculate the average of the cubed numbers
+    average_cubed = sum(cubed_numbers) / len(cubed_numbers)
+
+    # Step 3: Take the cube root of the average
+    polarity_average = average_cubed ** (1/3)
+
+    #print(polarity_average)
     # Loop over the lists simultaneously
     for keyword, category, intensity, polarity in zip(keywords_list, mappedKeywordsList, intensityList, polarityList):
         # Check if the category exists in mental_health_dict
@@ -153,15 +161,39 @@ def add_summary():
                 "keywords":objectives[1],
                 "mappedKeywords":objectives[2],
                 "intensity":objectives[3],
-                "summary": summary,
+                "summary": get_conversation_summary(summary),
                 "time":formatted_date_time,
-                "average-polarity":polarity_average
+                "avgPolarity":int(polarity_average)
             })
             print(f"Document with ID {id} updated successfully.")
         except Exception as e:
             print(f"An error occurred while updating: {e}")
     else:
         print(f"No document found with ID {id}")
+
+def add_total_summary():
+    conversation_id = conversations_ref.document("conversationCount").get().to_dict()["num"]
+    
+    full_summary = ""
+    for i in range(conversation_id):
+        j = i+1
+
+        conversations = conversations_ref.stream()
+        
+        for conversation in conversations:
+            conversation_data = conversation.to_dict()
+            full_summary += f"Summary of Conversation 1 on Date : {conversation_data["time"]} \n
+                            {conversation_data["summary"]}"
+    
+    doc_ref = conversations_ref.document("total_summary")
+    doc_ref.update({
+        "summary":get_total_summary(full_summary)
+    })
+
+def update_category_summary():
+    return
+
+
 
 old_id = -1
 
@@ -173,6 +205,8 @@ while True:
     if (ended and old_id != conversation_id):
         print("Convo has ended")
         add_summary()
+        add_total_summary()
+        update_category_summary()
         old_id = conversations_ref.document("conversationCount").get().to_dict()["num"]
     else:
         print(f"no change- convo-id = {conversation_id} and old_id = {old_id}")

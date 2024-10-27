@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 memory = ConversationBufferMemory()
-stored_conversation = fetch_conversation_from_firebase()
-memory = ConversationBufferMemory(buffer=stored_conversation)
 llm = OpenAI(temperature=0.7)
 
 system_role = (
@@ -21,8 +19,7 @@ system_role = (
 # Set up the conversation chain to maintain context
 conversation = ConversationChain(
     llm=llm,
-    memory=memory,
-    system_role=system_role
+    memory=memory
 )
 
 def chat_with_bot(userinput):    
