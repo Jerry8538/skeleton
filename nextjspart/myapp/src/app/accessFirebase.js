@@ -14,6 +14,43 @@ export async function resetData() {
     setDoc(convCount, { num: 0 })
 }
 
+export async function numConv(){
+    const colxn = collection(db, "conversations")
+    const convCountRef = doc(colxn, "conversationCount");
+    const convCount = (await getDoc(convCountRef)).data().num;
+    return convCount;
+
+}
+
+export async function getPolarityById(id) {
+    const conversationsRef = collection(db, "conversations");
+    const q = query(conversationsRef, where("id", "==", id));
+    const querySnapshot = await getDocs(q);
+    
+    if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0].data();
+        const intList = doc.polarity.split(",").map(Number);
+        return intList;
+    } else {
+        return null; // Or handle the case where the document doesn't exist
+    }
+}
+
+// Function to get summary by ID
+export async function getSummaryById(id) {
+    const conversationsRef = collection(db, "conversations");
+    const q = query(conversationsRef, where("id", "==", id));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0].data();
+        return doc.summary;
+    } else {
+        return null; // Or handle the case where the document doesn't exist
+    }
+}
+
+
 export async function addConversation() {
     const colxn = collection(db, "conversations")
 
