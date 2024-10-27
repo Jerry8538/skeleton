@@ -3,11 +3,20 @@
 import React from 'react';
 import {useParams} from 'next/navigation'
 import PolarityGraph from '@/app/compos/polaritygraph';
+import {getPolarityById,getSummaryById} from '@/app/accessFirebase'
+import { useEffect } from 'react';
 
 export default function Dashboard() {
     const { id } = useParams()
     console.log(id)
-    var polarity = [10,20 ,-30 ,40 ,50 ,6 ,72 ,38]
+    var polarity = []
+    var Summary = ""
+  useEffect(() => {
+    //get firebase data
+
+    polarity = getPolarityById(id)
+    Summary = getSummaryById(id)
+  })
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <header className="bg-gray-800 text-white py-4 text-center">
@@ -26,8 +35,8 @@ export default function Dashboard() {
         
       </div>
       <div className="bg-gray-400 mt-4 p-4 rounded-lg shadow-lg">
-        <h3 className="text-lg font-bold">Summary Title {id}</h3>
-        <p>Summary</p>
+        <h3 className="text-lg font-bold">Summary of Session {id}</h3>
+        <p>{Summary}</p>
       </div>
     </div>
   );
