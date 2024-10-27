@@ -60,19 +60,27 @@ def add_output():
     else:
         print(f"No document found with ID {message_id}")
 
-
-conversation_id = db.collection("conversations").document("conversationCount").get().to_dict()["num"]
+exists = False
+while(not exists):
+    conversation_id = db.collection("conversations").document("conversationCount").get().to_dict()["num"]
     
-query_ref = conversations_ref.where("id", "==", conversation_id)
-query_result = query_ref.limit(1).stream()  # Limit to 1 document
+    query_ref = conversations_ref.where("id", "==", conversation_id)
+    query_result = query_ref.limit(1).stream()  # Limit to 1 document
 
-# Retrieve the first matching conversation document
-messages_ref = ""
-for conversation in query_result:
-    # If the conversation is found, get the messages subcollection
-    messages_ref = conversation.reference.collection("messages")
+    found = False
+    # Retrieve the first matching conversation document
+    for conversation in query_result:
+        found = True
+        # If the conversation is found, get the messages subcollection
+        messages_ref = conversation.reference.collection("messages")
+    
+    if (not found):
+        print("no convos yet")
+        continue
 
-id1 = messages_ref.document("messageCount").get().to_dict()["num"]
+    exists=True
+
+    id1 = messages_ref.document("messageCount").get().to_dict()["num"]
 
 # Watch the document
 while True:

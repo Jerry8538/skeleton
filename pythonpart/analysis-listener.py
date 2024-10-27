@@ -206,6 +206,9 @@ while True:
     conversation_id = db.collection("conversations").document("conversationCount").get().to_dict()["num"]
     query = conversations_ref.where("id", "==", conversation_id).limit(1)
     results = query.get()
+    if (not results):
+        print("no convos yet")
+        continue
     ended = results[0].to_dict()["ended"]
     if (ended and old_id != conversation_id):
         print("Convo has ended")
