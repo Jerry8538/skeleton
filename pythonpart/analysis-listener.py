@@ -4,6 +4,8 @@ import time
 import json
 from summary import get_conversation_summary
 from keywords import final_return
+from datetime import datetime
+
 
 # Initialize Firebase
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -11,6 +13,8 @@ firebase_admin.initialize_app(cred)
 db = firestore.client() # Create an Event for notifying main thread.
 
 conversations_ref = db.collection("conversations")
+
+
 
 def create_list(string):
     keywords_str = string.replace("],[", ",")  
@@ -106,12 +110,14 @@ def add_summary():
     intensityList = create_intensity_list(objectives[3])
     # print(intensityList)
     polarityList = objectives[0][:-1].split(',')
+    print(polarityList)
     # print(polarityList)
     polarityno = list(map(int, polarityList))
+    print(polarityno)
 
     # Calculate the average
     polarity_average = sum(polarityno) / len(polarityno) if polarityno else 0
-
+    print(polarity_average)
     # Loop over the lists simultaneously
     for keyword, category, intensity, polarity in zip(keywords_list, mappedKeywordsList, intensityList, polarityList):
         # Check if the category exists in mental_health_dict
@@ -133,6 +139,11 @@ def add_summary():
 
     if results:
         # Get the document reference
+        # Get the current date and time
+        now = datetime.now()
+
+        # Format the date and time
+        formatted_date_time = now.strftime("%d %B %Y %H:%M:%S")
         doc_ref = results[0].reference
         try:
             # Update fields with the data provided in updated_data
@@ -142,8 +153,9 @@ def add_summary():
                 "keywords":objectives[1],
                 "mappedKeywords":objectives[2],
                 "intensity":objectives[3],
-                "average-polarity":polarity_average,
-                "summary": summary
+                "summary": summary,
+                "time":formatted_date_time,
+                "average-polarity":polarity_average
             })
             print(f"Document with ID {id} updated successfully.")
         except Exception as e:

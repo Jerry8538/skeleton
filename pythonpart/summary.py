@@ -14,6 +14,7 @@ def get_total_summary(data):
                 Based on intensities and concerns, create a summary of the mental health state with patient over time.
                 Include if the user's mental health is improving, deteriorating, or staying the same overtime.
                 Include how the user's mental health is changing over time. how the mental health concerns in the form of the category of concern and intensity of concern are changing over time.
+          Give the user suggestions also on how to improve their mental health specifically based on the given data.
           """
         },
         {
@@ -35,6 +36,7 @@ def get_conversation_summary(conversations):
             "role": "system",
             "content": """You are a mental health analysing assistant
                     Based on the data of previous conversations provided, create a summary of the mental health state and the sentiment of the user, the given data is sequential. Use the conversations to get the summary and tell how the user's sentiment changes overtime.
+                    Give the user suggestions also on how to improve their mental health specifically based on the given data.
                     """
         },  # Added missing comma here
         {
@@ -67,6 +69,7 @@ def get_category_summary(categories):
                     create a summary of the mental health state with respect to the particular category.
                     Include if the user's mental health is improving, deteriorating, or staying the same overtime with respect to the category for each category
                     give the output in the format of ||category||[<category1summary>, <category2summary>, ....]||category|| as output, if category is not having a summary, return an empty string in that place
+                    Give the user suggestions also on how to improve their mental health specifically based on the given data.            
             """
             },
             {
@@ -91,6 +94,7 @@ def get_total_category_summary(summarylist, category):
                     You are given input in the form of a list of descriptions of ai therapy chats which correspond to the given category and are sequential in manner.
                     create a total summary of the mental health state with respect to the particular category for the whole time and describe how it changes overtime.
                     Include if the user's mental health is improving, deteriorating, or staying the same overtime with respect to the category for each category
+            Give the user suggestions also on how to improve their mental health specifically based on the given data.
             """
             },
             {

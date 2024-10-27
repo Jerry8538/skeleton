@@ -2,6 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import time
 from keywords import get_openai_response
+from summary import get_conversation_summary
 
 # Initialize Firebase
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -39,7 +40,7 @@ def add_output():
     
     results = message_query.get()
     input_msg = results[0].to_dict()["input"]
-    output_msg = get_openai_response(input_msg)
+    output_msg = get_conversation_summary(input_msg)
 
     if results:
         # Get the document reference
