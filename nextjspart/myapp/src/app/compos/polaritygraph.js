@@ -4,6 +4,9 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
+
+
+
 const PolarityGraph = ({ polarity }) => {
     const chartData = {
         labels: Array.from({ length: polarity.length }, (_, i) => i + 1),

@@ -11,13 +11,12 @@ def get_total_summary(data):
         {
           "role": "system",
           "content": """
-                You are an assistant to a human and should give output in a easy to read manner.
+                You are an assistant to a human and should give output in a easy to read manner. Add newlines with \n
                 Based on intensities and concerns, create a summary of the mental health state with patient over time.
                 Include if the user's mental health is improving, deteriorating, or staying the same overtime.
                 Include how the user's mental health is changing over time. how the mental health concerns in the form of the category of concern and intensity of concern are changing over time.
           Give the user suggestions also on how to improve their mental health specifically based on the given data.
-          IT IS MOST IMPORTANT FOR YOU TO WRITE YOUR SUMMARY IN A READBLE,CONSISE MANNER FOR ANY PERSON.
-          """
+          Give the final output in a readable format with proper indentation, give the final structured and indented output with new lines and spaces as nescessary"""
         },
         {
           "role": "user",
@@ -37,12 +36,11 @@ def get_conversation_summary(conversations):
       messages = [{
             "role": "system",
             "content": """
-            You are an assistant to a human and should give output in a easy to read manner.
+            You are an assistant to a human and should give output in a easy to read manner. Add newlines with \n
             You are a mental health analysing assistant
                     Based on the data of previous conversations provided, create a summary of the mental health state and the sentiment of the user, the given data is sequential. Use the conversations to get the summary and tell how the user's sentiment changes overtime.
                     Give the user suggestions also on how to improve their mental health specifically based on the given data.
-                    IT IS MOST IMPORTANT FOR YOU TO WRITE YOUR SUMMARY IN A READBLE,CONSISE MANNER FOR ANY PERSON.
-                    """
+                     Give the final output in a readable format with proper indentation, give the final structured and indented output with new lines and spaces as nescessary"""
         },  # Added missing comma here
         {
             "role": "user",

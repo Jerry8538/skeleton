@@ -6,6 +6,8 @@ from summary import get_conversation_summary,get_total_summary
 from keywords import final_return
 from datetime import datetime
 
+import re
+
 
 # Initialize Firebase
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -15,6 +17,32 @@ db = firestore.client() # Create an Event for notifying main thread.
 conversations_ref = db.collection("conversations")
 
 
+
+def format_llm_response(response):
+    # Remove leading and trailing whitespace or quotes if present
+    response = response.strip('"')
+
+    # Remove asterisks
+    response = re.sub(r'\*+', '', response)
+    
+    # Add newline before numbered points and sections that start with "###"
+    response = re.sub(r'(\d\.)', r'\n\1', response)
+    response = re.sub(r'(###)', r'\n\1', response)
+    
+    # Add a newline before sentences starting with keywords
+    response = re.sub(r'(Summary of Mental Health State|Sentiment Changes Over Time|Suggestions for Improvement)', r'\n\n\1', response)
+
+    # Add newline for clearer formatting at the end of each main section
+    response = re.sub(r'(\.\s*)(\d\.)', r'.\n\n\2', response)
+
+    # Remove any additional spaces from the beginning or end of lines
+    formatted_response = "\n".join(line.strip() for line in response.splitlines())
+    
+    return formatted_response
+
+# Example usage
+response = """### Summary of Mental Health State 1. *Anxiety: The user reports high levels of anxiety, particularly feeling anxious (intensity 7) and being always scared (intensity 7)... (the rest of the response) """
+print(format_llm_response(response))
 
 def create_list(string):
     keywords_str = string.replace("],[", ",")  
@@ -163,7 +191,7 @@ def add_summary():
                 "keywords":objectives[1],
                 "mappedKeywords":objectives[2],
                 "intensity":objectives[3],
-                "summary": get_conversation_summary(summary),
+                "summary": format_llm_response(get_conversation_summary(summary)),
                 "time":formatted_date_time,
                 "avgPolarity":int(polarity_average),
                 "json":summary
@@ -192,7 +220,7 @@ def add_total_summary():
     
     doc_ref = conversations_ref.document("total")
     doc_ref.update({
-        "summary":get_total_summary(full_summary)
+        "summary":format_llm_response(get_total_summary(full_summary))
     })
 
 def update_category_summary():
