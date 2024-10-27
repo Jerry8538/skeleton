@@ -3,13 +3,14 @@ import { initializeApp, getApps, getApp } from "firebase/app"
 import { getFirestore,collection, addDoc,doc,getDoc ,getDocs,setDoc,query,orderBy, deleteDoc} from "firebase/firestore";
 
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC7RtocKn9RRMREVis0KoJeIISZMysXFaA",
-  authDomain: "pls-work-c0d1a.firebaseapp.com",
-  projectId: "pls-work-c0d1a",
-  storageBucket: "pls-work-c0d1a.appspot.com",
-  messagingSenderId: "576747885610",
-  appId: "1:576747885610:web:1aa9af29c5ad8633299f53",
+  apiKey: "AIzaSyBnqMXaGVvZi0QYRHIn4gNChO5nLMg75js",
+  authDomain: "megathon-database.firebaseapp.com",
+  projectId: "megathon-database",
+  storageBucket: "megathon-database.appspot.com",
+  messagingSenderId: "1059823307848",
+  appId: "1:1059823307848:web:03c161a68edd2104da5c7d"
 };
 
 // Initialize Firebase if it hasn't been initialized already

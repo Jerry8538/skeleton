@@ -5,7 +5,8 @@ import { useState } from 'react'
 import { Send, Bot, User } from 'lucide-react'
 import Navbar from '../compos/navbar.js'
 import { useEffect } from 'react'
-import { addConversation, addMessage, getOutput } from '../accessFirebase.js'
+import { addConversation, addMessage, getOutput, endConv } from '../accessFirebase.js'
+import { useRouter } from 'next/navigation'
 
 
 let flag=1 // so that the conversation doesn't get added multiple times
@@ -61,15 +62,32 @@ export default function ChatInterface() {
     }
   }
 
+  const router = useRouter()
+
+  const endSession = async (e) => {
+    e.preventDefault()
+    try {
+      // End the session
+      console.log("Session Ended")
+      await endConv()
+      router.push('/')
+    } catch (error) {
+      console.error('Error ending session:', error)
+    }
+  }
   return (
     <>
       
       <div className="flex flex-col h-screen bg-gray-900 text-gray-100"> 
-       <Navbar /> 
-        <header className="bg-gray-800 p-4 text-center">
+        
+        <header className="bg-gray-800 p-4 text-right">
+        <Navbar />
           <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-500 text-transparent bg-clip-text">
-            Ongoing Session 
+            <center>Ongoing Session</center> 
           </h1>
+          <button className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600" onClick={endSession}>
+            End Session
+    </button>
         </header>
         <div className="flex-grow mb-4 mx-4 mt-4 p-4 overflow-auto bg-gray-800 border border-gray-700 rounded-lg">
           {messages.map((message, index) => (

@@ -129,11 +129,45 @@ export async function endConv(){
     await updateDoc(latestConv.ref, {ended: true})
 }
 
+export async function getAvgPolarities(){
+    // return a list of the avgPolarities of every Conversation
+    const colxn = collection(db, "conversations")
+
+    // get all conversation docs
+    const allConvs = getDocs(colxn)
+
+    let avgPolarities = []
+    (await allConvs).forEach((doc) => {polarities.push(doc.data().avgPolarity)})
+
+    return avgPolarities
+}
+export async function getSummaries(){
+    // return a list of the summaries of every Conversation
+    const colxn = collection(db, "conversations")
+
+    // get all conversation docs
+    const allConvs = getDocs(colxn)
+
+    let summaries = []
+    (await allConvs).forEach((doc) => {summaries.push(doc.data().summary)})
+
+    return summaries
+}
+
+export async function getFinalSummary(){
+    const colxn = collection(db, "conversations")
+
+    const totalRef = doc(colxn, "total")
+    const total = (await getDoc(totalRef)).data()
+
+
+}
+
 //console.log(getOutput())
 //resetData()
-//await addConversation()
-//await addMessage("I'm unhappy")
-//await addMessage("I'm having troubling thoughts recently")
+// await addConversation()
+// await addMessage("I'm unhappy")
+// await addMessage("I'm having troubling thoughts recently")
 // await addMessage("but I don't want to kill myself and I'm not eating well")
 // await addMessage("I'm sleepy and I might get fired from my job")
 // await addMessage("I'm having troubling thoughts recently")
