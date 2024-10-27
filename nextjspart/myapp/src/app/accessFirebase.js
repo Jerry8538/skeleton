@@ -50,6 +50,19 @@ export async function getSummaryById(id) {
     }
 }
 
+export async function getJSONById(id) {
+    const conversationsRef = collection(db, "conversations");
+    const q = query(conversationsRef, where("id", "==", id));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0].data();
+        return doc.json;
+    } else {
+        return null; // Or handle the case where the document doesn't exist
+    }
+}
+
 
 export async function addConversation() {
     const colxn = collection(db, "conversations")

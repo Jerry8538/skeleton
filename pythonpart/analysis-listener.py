@@ -165,7 +165,8 @@ def add_summary():
                 "intensity":objectives[3],
                 "summary": get_conversation_summary(summary),
                 "time":formatted_date_time,
-                "avgPolarity":int(polarity_average)
+                "avgPolarity":int(polarity_average),
+                "json":summary
             })
             print(f"Document with ID {id} updated successfully.")
         except Exception as e:
